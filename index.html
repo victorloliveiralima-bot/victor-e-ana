@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050816">
+  <title>Victor &amp; Ana — Um Amor em Código</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="imagens/fiveicon.png" type="image/x-icon">
+
+  <noscript><style>.scene, #starfield { display: none !important; }</style></noscript>
+</head>
+<body>
+  <!-- Sprite usado apenas nos ornamentos das etapas 2 e 4 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="heart-shape" viewBox="0 0 24 24">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </symbol>
+  </svg>
+
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="burst" id="burst" aria-hidden="true"></div>
+  <!-- Única região de anúncios do site (evita leituras duplicadas) -->
+  <p class="sr-only" id="live" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <noscript>
+    <main class="nojs">
+      <p>Este presente foi feito em código e precisa de JavaScript para ganhar vida.<br>
+         Ative o JavaScript no navegador e recarregue a página. 💙💜</p>
+    </main>
+  </noscript>
+
+  <main id="app">
+    <!-- ETAPA 1: abertura -->
+    <section class="scene scene--opening" id="scene-opening" data-scene="opening">
+      <div class="scene__content">
+        <div class="stage" aria-hidden="true">
+          <div class="glow"></div>
+
+          <div class="heart heart--victor">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <defs>
+                <linearGradient id="grad-victor" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#93C5FD"/>
+                  <stop offset="0.55" stop-color="#3B82F6"/>
+                  <stop offset="1" stop-color="#1E40AF"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#grad-victor)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+
+          <div class="heart heart--ana">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <defs>
+                <linearGradient id="grad-ana" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#DDD6FE"/>
+                  <stop offset="0.55" stop-color="#8B5CF6"/>
+                  <stop offset="1" stop-color="#5B21B6"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#grad-ana)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+        </div>
+
+        <header class="intro">
+          <h1 class="title reveal" style="--d: 0s">Victor <span class="amp">&amp;</span> Ana</h1>
+          <p class="subtitle reveal" style="--d: .5s">Um Amor em Código</p>
+          <p class="quote reveal" style="--d: 1.1s">Algumas histórias são escritas em papel. A nossa também vive em código.</p>
+        </header>
+
+        <button type="button" class="btn btn--primary start-btn" id="start-btn">Começar nossa história ❤️</button>
+      </div>
+    </section>
+
+    <!-- ETAPA 2: a pergunta impossível -->
+    <section class="scene scene--question" id="scene-question" data-scene="question" hidden aria-labelledby="question-title">
+      <div class="scene__content">
+        <svg class="crest reveal" style="--d: .1s" viewBox="0 0 44 24" aria-hidden="true" focusable="false">
+          <use href="#heart-shape" class="crest__blue" x="0" y="0" width="24" height="24"/>
+          <use href="#heart-shape" class="crest__purple" x="20" y="0" width="24" height="24"/>
+        </svg>
+
+        <h2 class="question reveal" id="question-title" data-focus tabindex="-1" style="--d: .4s">Ana, você aceita continuar vivendo essa história comigo? 💜</h2>
+
+        <div class="slot reveal" id="slot" style="--d: .8s">
+          <p class="hint" id="hint" aria-hidden="true"></p>
+          <p class="reply" id="reply" aria-hidden="true"></p>
+        </div>
+
+        <div class="choices reveal" id="choices" style="--d: 1s">
+          <button type="button" class="btn btn--primary btn--yes" id="yes-btn">SIM! ❤️</button>
+          <button type="button" class="btn btn--ghost btn--no" id="no-btn">Não 🙄</button>
+        </div>
+
+        <p class="sr-only">Dica: o botão Não é brincalhão e foge. Use o botão SIM para continuar.</p>
+      </div>
+    </section>
+
+    <!-- ETAPA 3: museu de memórias -->
+    <section class="scene scene--memories" id="scene-memories" data-scene="memories" hidden aria-labelledby="memories-title">
+      <div class="scene__content">
+        <header class="museum-head">
+          <h2 class="museum-title reveal" id="memories-title" data-focus tabindex="-1" style="--d: .2s">Nosso Museu de Memórias</h2>
+          <p class="museum-sub reveal" style="--d: .7s">Existem momentos que o tempo não consegue apagar.</p>
+          <p class="museum-intro reveal" style="--d: 1.2s">Se eu pudesse guardar cada segundo ao seu lado, precisaria de um museu infinito. Mas escolhi seis pedacinhos da nossa história para te mostrar.</p>
+        </header>
+
+        <div class="counter reveal" style="--d: 1.7s">
+          <p class="counter__text">Memórias descobertas: <span class="counter__n" id="counter-n">0</span> de <span id="counter-total">6</span></p>
+          <div class="progress" aria-hidden="true"><span class="progress__fill" id="progress-fill"></span></div>
+          <p class="counter__hint">Toque em cada quadro para abrir a memória.</p>
+        </div>
+
+        <ol class="gallery" id="gallery"></ol>
+
+        <!-- Surpresa: só aparece depois de fechar a sexta memória -->
+        <div class="finale" id="finale" hidden>
+          <p class="finale__msg">Seis lembranças, infinitos motivos para continuar criando novas histórias com você. 💙💜</p>
+          <button type="button" class="btn btn--primary finale__btn" id="finale-btn" disabled>Ainda tenho uma surpresa para você... ❤️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 4: quiz -->
+    <section class="scene scene--game" id="scene-game" data-scene="game" hidden aria-labelledby="quiz-question">
+      <div class="scene__content">
+        <div class="quiz reveal" style="--d: .2s">
+          <p class="quiz__progress" id="quiz-progress">Pergunta 1 de 3</p>
+          <div class="quiz__dots" aria-hidden="true">
+            <span class="quiz__dot"></span><span class="quiz__dot"></span><span class="quiz__dot"></span>
+          </div>
+
+          <div class="quiz__card" id="quiz-card">
+            <h2 class="quiz__question" id="quiz-question" data-focus tabindex="-1"></h2>
+            <div class="quiz__options" id="quiz-options" role="group" aria-labelledby="quiz-question"></div>
+
+            <!-- Espaço reservado: sem saltos de layout ao responder -->
+            <div class="quiz__feedback" id="quiz-feedback" aria-hidden="true">
+              <p class="quiz__verdict" id="quiz-verdict"></p>
+              <p class="quiz__message" id="quiz-message"></p>
+            </div>
+
+            <button type="button" class="btn btn--primary quiz__next" id="quiz-next" disabled>Próxima pergunta →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resultado do quiz -->
+    <section class="scene scene--result" id="scene-quizend" data-scene="quizend" hidden aria-labelledby="result-title">
+      <div class="scene__content">
+        <svg class="crest reveal" style="--d: .1s" viewBox="0 0 44 24" aria-hidden="true" focusable="false">
+          <use href="#heart-shape" class="crest__blue" x="0" y="0" width="24" height="24"/>
+          <use href="#heart-shape" class="crest__purple" x="20" y="0" width="24" height="24"/>
+        </svg>
+        <h2 class="museum-title reveal" id="result-title" data-focus tabindex="-1" style="--d: .3s">Você conhece a nossa história? ❤️</h2>
+        <p class="result__score reveal" id="result-score" style="--d: .9s">Você acertou 0 de 3!</p>
+        <p class="result__msg reveal" style="--d: 1.5s">Mas sabe de uma coisa, meu amor? Nenhuma dessas datas consegue representar tudo que já vivemos. Cada conversa, cada abraço e cada momento ao seu lado fazem parte da minha história favorita: a nossa. 💙💜</p>
+        <div class="result__actions reveal" style="--d: 2.2s">
+          <button type="button" class="btn btn--primary" id="continue-btn">Continuar nossa história ❤️</button>
+          <button type="button" class="btn btn--ghost" id="replay-btn">Jogar novamente ↻</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 5: Quem é mais provável? -->
+    <section class="scene scene--stage5" id="scene-stage5" data-scene="stage5" hidden aria-labelledby="stage5-title">
+      <div class="scene__content romance-wrap">
+        <p class="eyebrow reveal">NOSSO JOGUINHO 💙💜</p>
+        <h2 class="romance-title reveal" id="stage5-title" data-focus tabindex="-1">Quem é mais provável? 💜</h2>
+        <p class="romance-lead reveal">Escolha quem mais combina com cada situação!</p>
+        <div id="couple-game" class="couple-game reveal">
+          <div class="couple-game__top"><span id="couple-progress">Pergunta 1 de 6</span><span id="couple-percent">0%</span></div>
+          <div class="couple-game__bar" aria-hidden="true"><span id="couple-fill"></span></div>
+          <div class="couple-game__question" id="couple-question" tabindex="-1"></div>
+          <div class="couple-game__choices" role="group" aria-label="Escolha Victor ou Ana">
+            <button type="button" class="couple-choice couple-choice--victor" id="choose-victor">💙 <span>Victor</span></button>
+            <button type="button" class="couple-choice couple-choice--ana" id="choose-ana">💜 <span>Ana</span></button>
+          </div>
+          <p class="couple-game__hint">Não existem respostas erradas. Escolha com o coração!</p>
+        </div>
+        <div id="couple-result" class="couple-result" hidden>
+          <h3>No final, sempre nós dois. ❤️</h3>
+          <p>Entre ciúmes bobos, risadas, abraços e surpresas, existe uma coisa que eu tenho certeza: é com você que eu quero viver todas as versões da minha vida.</p>
+          <div class="couple-score"><div>💙 <strong id="victor-score">0</strong><span>Victor</span></div><div>💜 <strong id="ana-score">0</strong><span>Ana</span></div></div>
+          <div class="romance-actions"><button type="button" class="btn btn--ghost" id="couple-replay">Jogar novamente ↻</button><button type="button" class="btn btn--primary" id="couple-continue">Tenho algo para te dizer... 💌</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 6: a carta -->
+    <section class="scene scene--stage6" id="scene-stage6" data-scene="stage6" hidden aria-labelledby="stage6-title">
+      <div class="scene__content romance-wrap">
+        <p class="eyebrow reveal">UMA CARTA PARA ANA 💌</p>
+        <h2 class="romance-title reveal" id="stage6-title" data-focus tabindex="-1">As palavras que meu coração guardou</h2>
+        <div class="letter-intro reveal" id="letter-intro">
+          <p>Ana, escrevi uma coisa para você...</p>
+          <button type="button" class="envelope" id="open-letter" aria-label="Abrir minha carta">
+            <span class="envelope__back"></span><span class="envelope__paper">Para Ana 💜</span><span class="envelope__flap"></span><span class="envelope__seal">💙💜</span>
+          </button>
+          <p><button type="button" class="btn btn--primary" id="open-letter-btn">Abrir minha carta 💌</button></p>
+        </div>
+        <article class="love-letter" id="love-letter" hidden>
+          <p class="letter-greeting">Meu amor,</p>
+          <p>Você sempre teve esse dom de transformar papel em amor. Suas cartas carregam um pedacinho de você, e eu guardo isso de um jeito que talvez nem consiga explicar.</p>
+          <p>Eu nunca fui tão bom em fazer cartas à mão tão bonitas quanto as suas. Mas encontrei uma maneira de escrever a minha: usando aquilo que venho aprendendo, linha por linha, pensando em você.</p>
+          <p>Talvez você me veja passando horas estudando programação, tentando entender códigos, corrigindo erros e fazendo as coisas funcionarem. Mas o que você talvez não saiba é que, mesmo nesses momentos, você continua nos meus pensamentos.</p>
+          <p>E foi assim que nasceu esse presente. Porque você transforma papel em amor, e eu quis transformar código em amor.</p>
+          <p>Cada coração que apareceu, cada fotografia que você abriu, cada pergunta que respondeu... tudo isso foi feito para te lembrar que a nossa história é a coisa mais bonita que eu poderia construir.</p>
+          <p>Eu sei que nem todos os nossos dias são perfeitos. Às vezes a gente se desentende, erra, fica triste ou não consegue encontrar as palavras certas. Mas eu não quero um amor que só exista nos dias fáceis. Eu quero continuar aprendendo a te amar melhor, inclusive nos difíceis.</p>
+          <p>Se um dia você se perguntar o quanto é importante para mim, lembra que, entre tantas coisas que eu poderia ter criado, escolhi construir um lugar inteirinho para nós dois.</p>
+          <p>E mesmo que um dia eu aprenda mil linguagens de programação, nenhuma delas vai conseguir expressar completamente o que sinto por você.</p>
+          <p class="letter-highlight">Porque meu código favorito sempre será NÓS. 💙💜</p>
+          <p class="letter-signature">Com todo o meu amor, Victor.</p>
+          <button type="button" class="btn btn--primary" id="letter-continue">Antes de terminar, preciso te mostrar mais uma coisa... ❤️</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ETAPA 7: encerramento -->
+    <section class="scene scene--stage7" id="scene-stage7" data-scene="stage7" hidden aria-labelledby="stage7-title">
+      <div class="scene__content romance-wrap">
+        <div id="last-chapter">
+          <p class="eyebrow reveal">O ÚLTIMO CAPÍTULO ❤️</p>
+          <h2 class="romance-title reveal" id="stage7-title" data-focus tabindex="-1">O tempo que você não me vê</h2>
+          <p class="romance-lead reveal">Nem sempre estamos juntos. Mas isso não significa que você esteja longe de mim.</p>
+          <p class="chapter-prompt">Enquanto você não está olhando...</p>
+          <div class="thought-grid">
+            <div class="thought-card">💻<p>Eu estudo pensando no nosso futuro.</p></div>
+            <div class="thought-card">💜<p>Eu sinto saudade até das nossas pequenas manias.</p></div>
+            <div class="thought-card">✨<p>Eu lembro de você nas coisas mais simples.</p></div>
+            <div class="thought-card">🏡<p>Eu imagino tudo que ainda vamos construir juntos.</p></div>
+          </div>
+          <div class="chapter-letter">
+            <p>Meu amor, você viu apenas alguns momentos da nossa história neste site.</p>
+            <p>Mas existe uma parte que nenhuma fotografia consegue mostrar: todas as vezes em que penso em você quando ninguém está vendo.</p>
+            <p>Nos dias corridos, nas noites estudando, nos momentos em que sinto saudade e até quando estou imaginando como será nosso futuro...</p>
+            <p class="chapter-emphasis">Você está lá.</p>
+            <p>Porque o amor não acontece apenas quando estamos juntos. Ele também vive em tudo aquilo que fazemos pensando um no outro.</p>
+            <p>E se você chegou até aqui, quero que saiba de uma última coisa...</p>
+            <p class="chapter-final">Eu escolheria você. Em cada vida, em cada história, em cada linha de código. 💙💜</p>
+          </div>
+          <button type="button" class="btn btn--primary" id="last-surprise">Ver nossa última surpresa ❤️</button>
+        </div>
+        <div class="ending" id="ending" hidden>
+          <div class="ending__hearts" aria-hidden="true"><span class="ending__blue">♥</span><span class="ending__purple">♥</span><span class="ending__united">♥</span></div>
+          <h2 class="ending__headline" id="ending-title" tabindex="-1">Fim do site.<br>Nunca da nossa história. ❤️</h2>
+          <h3>Victor &amp; Ana</h3>
+          <p>Nossa história não termina aqui. Ela continua toda vez que estamos juntos.</p>
+          <p class="ending__credit">Feito com amor, por Victor. ❤️</p>
+          <button type="button" class="btn btn--primary" id="restart-story">Reviver nossa história ↻</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal das memórias (fora das cenas, na camada superior) -->
+  <dialog class="modal" id="memory-dialog" aria-labelledby="modal-title" aria-describedby="modal-msg">
+    <button type="button" class="modal__close" id="modal-close" aria-label="Fechar memória">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <div class="modal__inner" id="modal-inner">
+      <div class="modal__media" id="modal-media"></div>
+      <div class="modal__text">
+        <p class="modal__num" id="modal-num"></p>
+        <h3 class="modal__title" id="modal-title"></h3>
+        <p class="modal__sub" id="modal-sub" hidden></p>
+        <p class="modal__msg" id="modal-msg"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
