@@ -10,7 +10,7 @@
     return;
   }
 
-  const VOLUME_MAXIMO = 0.08;
+  const VOLUME_MAXIMO = 0.04;
   const DURACAO_FADE = 2500;
   const INTERVALO = 50;
 
