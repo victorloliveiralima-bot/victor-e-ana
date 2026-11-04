@@ -1,0 +1,564 @@
+
+/*
+ * Victor & Ana — Um Amor em Código
+ * Nosso Cantinho de Jogos
+ * Visual vinho + branco areia
+ * Mobile-first
+ */
+
+.amor-scene {
+  background-color: var(--sand, #F7F1E7);
+  color: var(--ink, #4A2A31);
+  padding-top: max(40px, env(safe-area-inset-top));
+  padding-bottom: max(55px, env(safe-area-inset-bottom));
+}
+
+.amor-scene[hidden],
+.amor-victory[hidden],
+.amor-deko-reveal[hidden],
+.amor-scene button[hidden] {
+  display: none !important;
+}
+
+.amor-wrap {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.amor-description {
+  max-width: 420px;
+  margin: 18px auto 28px;
+  color: var(--brown, #73585B);
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.amor-status {
+  margin: 20px auto;
+  min-height: 28px;
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: var(--wine, #6E2530);
+}
+
+/* Identificação dos personagens */
+
+.amor-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+}
+
+.amor-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amor-dot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.amor-dot.victor {
+  background: #7D94BC;
+}
+
+.amor-dot.ana {
+  background: #B5A0C9;
+}
+
+/* Labirinto */
+
+.amor-maze-board {
+  width: min(100%, 430px);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  grid-template-rows: repeat(11, minmax(0, 1fr));
+  gap: 2px;
+  padding: 7px;
+  border: 1px solid rgba(110, 37, 48, 0.2);
+  border-radius: 12px;
+  background: #E8DCD4;
+  box-shadow:
+    0 12px 35px rgba(74, 42, 49, 0.1),
+    inset 0 0 0 4px #FFFDF8;
+  overflow: hidden;
+}
+
+.amor-maze-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 3px;
+  font-size: clamp(12px, 3.6vw, 23px);
+  line-height: 1;
+  transition:
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.amor-maze-cell.is-wall {
+  background: #79343D;
+  box-shadow: inset 0 -3px rgba(50, 15, 23, 0.15);
+}
+
+.amor-maze-cell.is-path {
+  background: #FFFDF8;
+}
+
+.amor-maze-cell.is-goal {
+  background: #EAE0F2;
+}
+
+.amor-maze-cell.is-player {
+  background: #DFE8F6;
+  transform: scale(1.04);
+  z-index: 1;
+}
+
+.amor-maze-board.is-complete {
+  border-color: #A63842;
+  box-shadow:
+    0 0 0 3px rgba(166, 56, 66, 0.1),
+    0 15px 40px rgba(110, 37, 48, 0.15);
+}
+
+/* Controles mobile */
+
+.amor-controls {
+  width: 184px;
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows: repeat(2, 56px);
+  justify-content: center;
+  gap: 7px;
+  margin: 6px auto 22px;
+}
+
+.amor-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(110, 37, 48, 0.22);
+  border-radius: 12px;
+  background: #FFFDF8;
+  color: #6E2530;
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 4px 0 #D9B5A9;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease;
+}
+
+.amor-control--up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.amor-control--left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.amor-control--down {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.amor-control--right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.amor-control:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #D9B5A9;
+  background: #F2DFDA;
+}
+
+.amor-control:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Vitória do labirinto */
+
+.amor-victory {
+  width: 100%;
+  margin-top: 30px;
+  padding: 28px 22px;
+  border: 1px solid rgba(110, 37, 48, 0.16);
+  border-radius: 12px;
+  background: #FFFDF8;
+  box-shadow: 0 12px 35px rgba(74, 42, 49, 0.08);
+}
+
+.amor-victory-heart {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.amor-victory h3,
+.amor-deko-message h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: #6E2530;
+}
+
+.amor-victory p {
+  max-width: 360px;
+  margin: 0 auto 25px;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.amor-victory.is-celebrating .amor-victory-heart {
+  animation: amor-heart-beat 1.5s ease-in-out infinite;
+}
+
+/* Mistura das cores */
+
+.amor-mix-stage {
+  position: relative;
+  width: min(100%, 400px);
+  height: 250px;
+  margin: 5px auto 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.amor-mix-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(166, 56, 66, 0.12),
+    transparent 70%
+  );
+  transition: all 1s ease;
+}
+
+.amor-mix-orbit {
+  position: absolute;
+  top: 50%;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition:
+    left 1.1s cubic-bezier(0.25, 0.8, 0.25, 1),
+    right 1.1s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.8s ease,
+    scale 0.8s ease;
+}
+
+.amor-mix-orbit span {
+  font-size: 52px;
+  line-height: 1;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.12));
+}
+
+.amor-mix-orbit small {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 19px;
+  font-style: italic;
+  color: #4A2A31;
+}
+
+.amor-mix-orbit--blue {
+  left: 7%;
+  background: rgba(125, 148, 188, 0.12);
+}
+
+.amor-mix-orbit--purple {
+  right: 7%;
+  background: rgba(181, 160, 201, 0.16);
+}
+
+.amor-mix-union {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  font-size: 76px;
+  transition:
+    transform 1s cubic-bezier(0.2, 1.4, 0.4, 1),
+    opacity 0.8s ease;
+}
+
+.amor-mix-stage.is-step-1 .amor-mix-orbit--blue {
+  left: 19%;
+}
+
+.amor-mix-stage.is-step-1 .amor-mix-orbit--purple {
+  right: 19%;
+}
+
+.amor-mix-stage.is-step-2 .amor-mix-orbit--blue {
+  left: 29%;
+}
+
+.amor-mix-stage.is-step-2 .amor-mix-orbit--purple {
+  right: 29%;
+}
+
+.amor-mix-stage.is-united .amor-mix-orbit {
+  opacity: 0;
+  scale: 0.5;
+}
+
+.amor-mix-stage.is-united .amor-mix-union {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.amor-mix-stage.is-united .amor-mix-glow {
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(
+    circle,
+    rgba(166, 56, 66, 0.24),
+    rgba(181, 160, 201, 0.12) 45%,
+    transparent 75%
+  );
+}
+
+/* Indicador de progresso */
+
+.amor-mix-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 24px;
+}
+
+.amor-mix-step {
+  width: 35px;
+  height: 5px;
+  border-radius: 20px;
+  background: #E4D3CD;
+  transition: background-color 0.4s ease;
+}
+
+.amor-mix-step.is-filled {
+  background: #A63842;
+}
+
+/* Revelação do Deko */
+
+.amor-deko-reveal {
+  width: 100%;
+  margin-top: 32px;
+  animation: amor-reveal 1.1s ease both;
+}
+
+.amor-deko-frame {
+  width: min(100%, 330px);
+  margin: 0 auto 30px;
+  padding: 12px 12px 20px;
+  background: #FFFDF8;
+  border: 1px solid rgba(110, 37, 48, 0.12);
+  box-shadow:
+    0 3px 6px rgba(74, 42, 49, 0.07),
+    0 18px 40px rgba(74, 42, 49, 0.14);
+  transform: rotate(-2deg);
+}
+
+.amor-deko-photo {
+  display: block;
+  width: 100%;
+  max-height: 390px;
+  object-fit: contain;
+  background: #F7F1E7;
+}
+
+.amor-deko-caption {
+  margin: 16px 0 0;
+  font-family: var(--font-hand, cursive);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  line-height: 1.2;
+  color: #A63842;
+}
+
+.amor-deko-message {
+  max-width: 410px;
+  margin: 0 auto;
+}
+
+.amor-deko-message p {
+  margin: 14px auto;
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+.amor-deko-message strong {
+  display: block;
+  margin-top: 20px;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: #A63842;
+}
+
+.amor-actions {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* Animações */
+
+@keyframes amor-heart-beat {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.15);
+  }
+
+  55% {
+    transform: scale(1);
+  }
+}
+
+@keyframes amor-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Acessibilidade */
+
+.amor-scene button:focus-visible {
+  outline: 3px solid #6E2530;
+  outline-offset: 4px;
+}
+
+.amor-scene button {
+  touch-action: manipulation;
+}
+
+/* Celulares pequenos */
+
+@media (max-width: 390px) {
+  .amor-scene {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .amor-maze-board {
+    gap: 1px;
+    padding: 5px;
+  }
+
+  .amor-maze-cell {
+    font-size: 15px;
+  }
+
+  .amor-mix-stage {
+    height: 215px;
+  }
+
+  .amor-mix-orbit {
+    width: 90px;
+    height: 90px;
+  }
+
+  .amor-mix-orbit span {
+    font-size: 43px;
+  }
+
+  .amor-actions {
+    flex-direction: column;
+  }
+
+  .amor-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Computadores */
+
+@media (min-width: 768px) {
+  .amor-scene {
+    padding-top: 65px;
+    padding-bottom: 70px;
+  }
+
+  .amor-maze-cell {
+    font-size: 22px;
+  }
+
+  .amor-control:hover:not(:disabled) {
+    background: #F2DFDA;
+  }
+
+  .amor-deko-frame {
+    transition: transform 0.4s ease;
+  }
+
+  .amor-deko-frame:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+}
+
+/* Preferência por movimento reduzido */
+
+@media (prefers-reduced-motion: reduce) {
+  .amor-scene *,
+  .amor-scene *::before,
+  .amor-scene *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

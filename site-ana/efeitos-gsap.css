@@ -1,0 +1,143 @@
+
+/* =========================================
+   VICTOR & ANA 2.0
+   EFEITOS CINEMATOGRÁFICOS
+   ========================================= */
+
+:root {
+  --fx-wine: #6E2530;
+  --fx-ruby: #A63842;
+  --fx-sand: #F7F1E7;
+  --fx-blue: #7D94BC;
+  --fx-purple: #B5A0C9;
+}
+
+#amor-atmosfera {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+
+.amor-particula {
+  position: absolute;
+  display: block;
+  bottom: -50px;
+  font-family: Georgia, serif;
+  font-size: var(--tamanho, 18px);
+  line-height: 1;
+  color: var(--cor, #A63842);
+  opacity: 0;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+.scene__content {
+  position: relative;
+}
+
+.scene.is-active {
+  isolation: isolate;
+}
+
+/* Brilho delicado nos botões */
+
+.btn--primary {
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(110, 37, 48, .14);
+  transition:
+    background-color .25s ease,
+    box-shadow .35s ease,
+    transform .25s ease;
+}
+
+.btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, .22) 50%,
+    transparent 80%
+  );
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled) {
+    box-shadow: 0 12px 32px rgba(110, 37, 48, .23);
+  }
+
+  .btn--primary:hover:not(:disabled)::after {
+    animation: brilho-botao .8s ease;
+  }
+}
+
+@keyframes brilho-botao {
+  to {
+    transform: translateX(130%);
+  }
+}
+
+/* Fotografias */
+
+.frame {
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+.frame .photo {
+  overflow: hidden;
+}
+
+.frame .photo img {
+  transition:
+    opacity .6s ease,
+    scale .8s cubic-bezier(.2,.8,.2,1);
+}
+
+@media (hover: hover) {
+  .frame:hover .photo img {
+    scale: 1.055;
+  }
+}
+
+/* Cartas e jogos */
+
+.quiz__card,
+.couple-game,
+.amor-victory,
+.amor-deko-frame {
+  backface-visibility: hidden;
+}
+
+/* Pequeno detalhe na abertura */
+
+.scene--opening .stage {
+  filter: drop-shadow(0 10px 30px rgba(166,56,66,.08));
+}
+
+/* Acessibilidade */
+
+@media (prefers-reduced-motion: reduce) {
+  .amor-particula {
+    display: none !important;
+  }
+
+  .btn--primary::after {
+    display: none;
+  }
+
+  .frame .photo img {
+    transition: opacity .2s ease;
+  }
+}
